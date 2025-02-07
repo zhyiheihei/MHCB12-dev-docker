@@ -1,0 +1,28 @@
+
+{
+    "name": "MHCB12_devcontainer",
+    // 使用 Dockerfile 来构建容器
+    "build": {
+        "dockerfile": "Dockerfile",
+        "context": "."
+    },
+    // 挂载 VS Code 打开的文件夹到容器内的 ~/workspace 位置
+	"workspaceMount": "source=${localWorkspaceFolder},target=/root/workspace,type=bind",
+	"workspaceFolder": "/root/workspace",
+	"remoteUser": "root",
+    //"postCreateCommand": "nohup /root/sync.sh > /dev/null 2>&1 &"
+    "overrideCommand": false,
+    "extensions": [
+        "ms-vscode.cpptools",
+        "hvuad.vscode-better-align-new",
+        "ms-vscode.cpptools-extension-pack",
+        "twxs.cmake",
+        "ms-vscode.cmake-tools",
+        "hoovercj.vscode-power-mode",
+        "dbaeumer.vscode-eslint",
+        "streetsidesoftware.code-spell-checker",
+        "Gruntfuggly.todo-tree",
+        "Alibaba-Cloud.tongyi-lingma",
+        "redhat.vscode-yaml"
+    ]
+}
