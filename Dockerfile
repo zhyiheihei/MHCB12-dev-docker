@@ -1,5 +1,5 @@
 # 使用官方镜像作为基础
-FROM ubuntu:22.04
+FROM hub-mirror.c.163.com/library/ubuntu:22.04
 
 LABEL maintainer="zhyi4 <molishanguang@outlook.com>"
 
