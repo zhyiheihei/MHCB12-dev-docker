@@ -14,17 +14,12 @@ COPY ssh/id_rsa.pub /root/.ssh/id_rsa.pub
 COPY ssh/id_rsa /root/.ssh/id_rsa
 COPY ssh/authorized_keys /root/.ssh/authorized_keys
 COPY ssh/known_hosts /root/.ssh/known_hosts
-RUN chmod 600 /root/.ssh/id_rsa \
-    && chmod 644 /root/.ssh/id_rsa.pub \
-    && chmod 644 /root/.ssh/authorized_keys \
-    && chmod 644 /root/.ssh/known_hosts \
-    && chown -R root:root /root/.ssh
 
 # 安装基础工具、编译依赖和 tini
 RUN apt-get update && apt-get install -y git
 # 克隆仓库
 WORKDIR /root
-RUN git clone git@codeup.aliyun.com:dooya/MHCB12.git
+RUN git clone https://git.zhyi.cc:5000/zhyi/MHCB12.git
 # 安装基础工具、编译依赖和 tini
 RUN dpkg --add-architecture i386 \
     && apt-get update \
