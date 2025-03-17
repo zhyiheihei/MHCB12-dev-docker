@@ -7,13 +7,6 @@ LABEL maintainer="zhyi4 <molishanguang@outlook.com>"
 RUN cp -a /etc/apt/sources.list /etc/apt/sources.list.bak \
     && sed -i 's@//.*archive.ubuntu.com@//mirrors.ustc.edu.cn@g' /etc/apt/sources.list
 
-# 创建 SSH 目录并复制 SSH 密钥文件
-# 假设.devcontainer与Dockerfile在同一目录下，修改COPY路径
-RUN mkdir -p /root/.ssh
-COPY ssh/id_rsa.pub /root/.ssh/id_rsa.pub
-COPY ssh/id_rsa /root/.ssh/id_rsa
-COPY ssh/authorized_keys /root/.ssh/authorized_keys
-COPY ssh/known_hosts /root/.ssh/known_hosts
 
 # 安装基础工具、编译依赖和 tini
 RUN apt-get update && apt-get install -y git
