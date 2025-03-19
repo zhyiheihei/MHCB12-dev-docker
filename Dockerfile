@@ -14,7 +14,6 @@ RUN apt-get update && apt-get install -y git
 # 配置git忽略一些变化（仅对字符变化） 
 # 全局基础配置（适用于Windows开发者）
 RUN git config --global core.filemode false          # 忽略权限位
-RUN git config --global core.autocrlf true           # 换行符转换
 RUN git config --global diff.ignoreAllSpace true     # 忽略空格差异
 
 # 按需添加
@@ -83,6 +82,7 @@ RUN apt-get update \
 
 # 设置工作目录
 WORKDIR /root/workspace
-
+# 忽略因为换行符导致的差异
+RUN git config --global core.autocrlf true
 ENTRYPOINT ["/usr/bin/tini", "--"]
 CMD ["/root/sync.sh"]
