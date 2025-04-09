@@ -85,4 +85,4 @@ WORKDIR /root/workspace
 # 忽略因为换行符导致的差异
 RUN git config --global core.autocrlf true
 ENTRYPOINT ["/usr/bin/tini", "--"]
-CMD ["/root/sync.sh"]
+# CMD ["/root/sync.sh"]

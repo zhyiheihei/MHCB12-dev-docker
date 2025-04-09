@@ -3,12 +3,22 @@
  # @Author       : error: git config user.name & please set dead value or install git
  # @Date         : 2025-02-08 02:42:01
  # @LastEditors  : moli-pp
- # @LastEditTime : 2025-02-08 05:55:33
+ # @LastEditTime : 2025-04-09 08:33:25
  # @FilePath     : \MHCB12-dev-docker\sh\build.sh
  # @Description  : 
  # 
  # Copyright (c) 2025 by lym, All Rights Reserved. 
 ### 
+
+# 清空目标目录并同步workspace数据
+SYNC_COMMAND="rsync -avz --delete /root/workspace/ /root/MHCB12/vendor/xiaomi/mijia_ble_mesh/ && find /root/MHCB12/vendor/xiaomi/mijia_ble_mesh/ -type f -exec dos2unix {} \;"
+
+# 执行同步和行尾转换
+eval $SYNC_COMMAND
+if [ $? -ne 0 ]; then
+    echo "同步和行尾转换失败，退出状态码: $?"
+    exit 1
+fi
 
 # 定义进入目录命令
 CD_COMMAND="cd /root/MHCB12"
