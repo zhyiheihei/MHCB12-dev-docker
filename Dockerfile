@@ -63,7 +63,7 @@ RUN dpkg --add-architecture i386 \
 # 传入编译和同步脚本并赋予执行权限
 COPY sh/build.sh /root/build.sh
 COPY sh/convert_file.sh /root/convert_file.sh
-RUN chmod +x /root/sync.sh /root/build.sh /root/convert_file.sh
+RUN chmod +x /root/build.sh /root/convert_file.sh
 
 # 设置符号链接以便于直接使用
 RUN ln -s /root/build.sh /usr/local/bin/build
