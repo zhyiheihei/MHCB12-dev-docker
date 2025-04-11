@@ -3,7 +3,7 @@
  # @Author       : error: git config user.name & please set dead value or install git
  # @Date         : 2025-02-08 02:42:01
  # @LastEditors  : moli-pp
- # @LastEditTime : 2025-04-10 11:28:01
+ # @LastEditTime : 2025-04-11 14:18:41
  # @FilePath     : \MHCB12-dev-docker\sh\build.sh
  # @Description  : 
  # 
@@ -14,13 +14,16 @@
 SYNC_COMMAND="rsync -avz --delete --exclude='.*/' --exclude='.*' /root/workspace/ /root/MHCB12/vendor/xiaomi/mijia_ble_mesh/ && find /root/MHCB12/vendor/xiaomi/mijia_ble_mesh/ -type f -exec dos2unix {} \;"
 
 # 执行同步和行尾转换
-echo "正在同步workspace数据并转换行尾..."
-eval $SYNC_COMMAND
-if [ $? -ne 0 ]; then
-    echo "同步和行尾转换失败，退出状态码: $?"
-    exit 1
+if [ "$1" != "clean" ]; then
+
+    echo "正在同步workspace数据并转换行尾..."
+    eval $SYNC_COMMAND
+    if [ $? -ne 0 ]; then
+        echo "同步和行尾转换失败，退出状态码: $?"
+        exit 1
+    fi
+    echo "同步和行尾转换完成。"
 fi
-echo "同步和行尾转换完成。"
 
 # 定义进入目录命令
 CD_COMMAND="cd /root/MHCB12"
@@ -43,6 +46,12 @@ if [ $# -eq 0 ]; then
 elif [ "$1" = "clean" ]; then
     # 传入参数为 clean，执行清理编译命令
     BUILD_COMMAND="./build.sh vendor/realtek/boards/rtl8762e/configs/app distclean"
+elif [ "$1" = "menuconfig" ]; then
+    # 传入参数为 menuconfig，执行清理编译命令
+    BUILD_COMMAND="./build.sh vendor/realtek/boards/rtl8762e/configs/app menuconfig"
+elif [ "$1" = "pm" ]; then
+    # 传入参数为 pm，执行清理编译命令
+    BUILD_COMMAND="./build.sh vendor/realtek/boards/rtl8762e/configs/app_pm"
 else
     echo "不支持的参数: $1，仅支持 'clean' 参数或者不传参数。"
     exit 1
@@ -93,16 +102,6 @@ if [ $BUILD_EXIT_CODE -eq 0 ]; then
                 echo "文件已成功移动到workspace/output目录"
             fi
         fi
-
-        # 执行 convert_file.sh 脚本
-        echo "执行convert_file.sh脚本..."
-        /root/convert_file.sh /root/MHCB12/vendor/xiaomi/mijia_ble_mesh/Kconfig
-        if [ $? -ne 0 ]; then
-            echo "convert_file.sh 脚本执行失败，退出状态码: $?"
-        else
-            echo "convert_file.sh 脚本执行成功"
-        fi
-
         echo "所有操作已完成"
         # 退出后续检查流程
         exit 0
