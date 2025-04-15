@@ -7,8 +7,11 @@ env:
 jobs:
   build-and-push:
     runs-on: 1panel  # 使用默认的 Runner 标签
+
+    container: catthehacker/ubuntu:act-latest
+
     steps:
-      - name: Checkout Repository
+      - name: Checkout
         uses: actions/checkout@v3
 
       - name: Login to Docker Hub
