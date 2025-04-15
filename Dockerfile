@@ -10,9 +10,9 @@ RUN cp -a /etc/apt/sources.list /etc/apt/sources.list.bak \
 
 # 安装基础工具、配置git并优化
 RUN apt-get update && apt-get install -y git \
-    && git config --global core.filemode false \
-    && git config --global diff.ignoreAllSpace true \
-    && git config --global core.ignoreStat true \
+    # && git config --global core.filemode false \
+    # && git config --global diff.ignoreAllSpace true \
+    # && git config --global core.ignoreStat true \
     && useradd -m developer \
     && chown -R developer:developer /root
 # 克隆仓库
@@ -76,6 +76,6 @@ RUN apt-get update \
 # 设置工作目录
 WORKDIR /root/workspace
 # 忽略因为换行符导致的差异
-RUN git config --global core.autocrlf true
+# RUN git config --global core.autocrlf true
 ENTRYPOINT ["/usr/bin/tini", "--"]
 CMD ["/bin/bash", "-i", "-c", "tail -f /dev/null"]
