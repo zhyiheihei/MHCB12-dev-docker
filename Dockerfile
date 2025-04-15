@@ -17,7 +17,9 @@ RUN apt-get update && apt-get install -y git \
     && chown -R developer:developer /root
 # 克隆仓库
 WORKDIR /root
-RUN git clone https://git.zhyi.cc:5000/zhyi/MHCB12.git
+RUN --mount=type=secret,id=git_cred,target=/root/.git-credentials \
+    git config --global credential.helper 'store --file=/root/.git-credentials' && \
+    git clone https://codeup.aliyun.com/dooya/MHCB12.git
 # 安装基础工具、编译依赖和 tini
 RUN dpkg --add-architecture i386 \
     && apt-get update \

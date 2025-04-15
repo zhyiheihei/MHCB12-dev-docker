@@ -1,0 +1,44 @@
+name: Build and Push Docker Image
+on: [push]  # 触发条件：代码推送时自动运行
+
+env:
+  GIT_CRED: https://${{ secrets.GIT_USER }}:${{ secrets.GIT_TOKEN }}@git.zhyi.cc
+  
+jobs:
+  build-and-push:
+    runs-on: 1panel  # 使用默认的 Runner 标签
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Login to Docker Hub
+        run: |
+          echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+      # 3. 登录阿里云镜像仓库
+      - name: Login to Aliyun ACR
+        run: |
+          echo "${{ secrets.ALIYUN_ACR_PASSWORD }}" | docker login -u "${{ secrets.ALIYUN_ACR_USERNAME }}" registry.cn-hangzhou.aliyuncs.com --password-stdin
+        env:
+          ALIYUN_ACR_USERNAME: ${{ secrets.ALIYUN_ACR_USERNAME }}
+          ALIYUN_ACR_PASSWORD: ${{ secrets.ALIYUN_ACR_PASSWORD }}
+
+      # 4. 构建 Docker 镜像
+      - name: Build Docker Image
+        run: |
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/mhcb12_dev:latest .
+          # 同时打阿里云标签
+          docker tag ${{ secrets.DOCKERHUB_USERNAME }}/mhcb12_dev:latest registry.cn-hangzhou.aliyuncs.com/${{ secrets.ALIYUN_ACR_NAMESPACE }}/mhcb12_dev:latest
+
+      # 5. 推送至 Docker Hub
+      - name: Push to Docker Hub
+        run: |
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/mhcb12_dev:latest
+
+      # 6. 推送至阿里云镜像仓库
+      - name: Push to Aliyun ACR
+        run: |
+          docker push registry.cn-hangzhou.aliyuncs.com/${{ secrets.ALIYUN_ACR_NAMESPACE }}/mhcb12_dev:latest
