@@ -18,13 +18,13 @@ jobs:
           echo "Checking environment variables..."
           env
 
-      - name: Login to Docker Hub
-        run: |
-          echo "Logging into Docker Hub..."
-          echo "$DOCKERHUB_PASSWORD" | docker login --username "$DOCKERHUB_USERNAME" --password-stdin || exit 1
-        env:
-          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-          DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+      # - name: Login to Docker Hub
+      #   run: |
+      #     echo "Logging into Docker Hub..."
+      #     echo "$DOCKERHUB_PASSWORD" | docker login --username "$DOCKERHUB_USERNAME" --password-stdin || exit 1
+      #   env:
+      #     DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      #     DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
 
       # 登录到 Docker Hub（或其他 Docker 注册表）
       - name: Log in to Docker Hub
